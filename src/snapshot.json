@@ -1,0 +1,38 @@
+{
+    "snapshot":{
+        "0": [ "default", "cli" ],
+        "8":[ "122", "123" ]
+    },
+    "session":{
+        "password": "bcb04b7e103a0cd8b54763051cef08bc55abe029fdebae5e1d417e2ffb2a00a3",
+        "handlers":[
+            {
+                "domain": "thempus.com",
+                "path": "/",
+                "port": "80",
+                "save_handler": "copperforest\\birch\\authentication\\SSLPDOSession",
+                "event_handler": "copperforest\\birch\\authentication\\SSLPDOSession",
+                "expiration": 600,
+                "cookie_expiration": 0,
+                "allow_anonymous": true, 
+                "autocommit": false
+            }
+        ]
+    },
+    "error":{
+        "exception_level": "E_ERROR",
+        "log_level": "E_ERROR",
+        "mail_level": "E_ERROR",
+        "mailbox": "alejandro.gama@gmail.com"
+    },
+    "log":{
+        "level":{
+            "CF_LOG_ERROR": [ "default", "cli" ],
+            "CF_LOG_ERROR | CF_LOG_WARNING": [ "143" ]
+        },
+        "file_per_user": true
+    },
+    "date.timezone": "Europe/Madrid",
+    "intl.default_locale": "ES_es.UTF-8"
+}
+

@@ -1,0 +1,14 @@
+{
+    "name": "copperforest/snapshot",
+    "type": "composer-plugin",
+    "require": {
+        "php": ">=5.3",
+        "composer-plugin-api": "1.1"
+    },
+    "extra": {
+        "class": "copperforest\\snapshot\\plugin\\SnapshotPlugin"
+    },
+    "autoload": {
+        "psr-4": { "copperforest\\snapshot\\": "src/" }
+    }
+}
