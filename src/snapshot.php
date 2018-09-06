@@ -4,13 +4,24 @@
 require_once 'snapshot.base.php';
 
  
-$previous =  0;
+$_SERVER[ 'CF_SNAPSHOT' ] =  0;
+$autoloadComposer = false;
+$autoloadDefault = false;
+$thereAreAlternatives = isset( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] ) && is_array( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] );
 
-if( !isset( $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ] ) ){
-    foreach ( $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ] as $snapshot => $users ){
-        if( in_array( 'default', $users ) ){
-            $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ] = (int) $snapshot;
-            break;
+
+if( $thereAreAlternatives ){
+    
+    krsort( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] );
+    
+    if( !isset( $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ] ) ){
+        
+        foreach ( $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ] as $snapshot => $users ){
+            
+            if( in_array( 'default', $users ) ){
+                $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ] = (int) $snapshot;
+                break;
+            }
         }
     }
 }
@@ -19,10 +30,9 @@ if(
     !empty( $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ] )  &&
     file_exists( CF_SNAPSHOTS_PATH . $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ] . DIRECTORY_SEPARATOR . 'snapshot.time' ) 
 ){ //Si existe build defautl y es distinto de 0
-    
-    $_SERVER[ 'CF_SNAPSHOT' ] =  $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ];
-    
-    $previous = $_SERVER[ 'CF_SNAPSHOT' ];
+
+    $autoloadDefault = true;
+    $_SERVER[ 'CF_SNAPSHOT' ] =  $_SERVER[ 'SNAPSHOT_JSON' ][ 'spanshot' ][ 'default' ];    
     
     function cfFrameworkDefaultClassPath( $className )
     {
@@ -34,6 +44,7 @@ if(
     spl_autoload_register( 'cfFrameworkDefaultClassPath' );
 }
 else{
+    $autoloadComposer = true;
     include CF_BASE_PATH . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 }
 
@@ -171,11 +182,10 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
         session_start ( );
     }
     
-    
     $sessionInterface = ( $_SESSION instanceof \copperforest\snapshot\authentication\SessionHandlerInterface );
     $sessionObject = ( $_SESSION instanceof \copperforest\snapshot\authentication\SessionHandler );
              
-    if( $sessionInterface || $sessionObject ){
+    if( ( $sessionInterface || $sessionObject ) && $thereAreAlternatives  ){
         
         $userId = $_SESSION->getUserId();
         $storedUserId = $_SESSION->getPreviousUserId();
@@ -184,23 +194,18 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
         if( $snapshot == null || $userId != $storedUserId ){
             //si no cambio el usuario y hay establecido un build en session seguimos utilizandolos
 
-            if ( isset( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] ) && is_array( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] ) ){
+            foreach( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] as $s => $users ){
 
-                krsort( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] );
+                if( in_array( $userId, $users ) ){
+                    $_SESSION->setPreviousSnapshot( $s );
 
-                foreach( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] as $s => $users ){
-
-                    if( in_array( $userId, $users ) ){
-                        $_SESSION->setPreviousSnapshot( $s );
-                        
-                        if( $sessionObject ){
-                            $_SESSION->commit();
-                        }
-                        
-                        break;
+                    if( $sessionObject ){
+                        $_SESSION->commit();
                     }
+
+                    break;
                 }
-            }
+            }            
 
             if( $storedUserId != $userId ){  //EN QUE cIRCUNSTANCIAS PASA ESTO? CUANDO storedUserId esta a vacio y UserId no? Y en el constructor de la session pueden pasar muchas cosas
                 $_SESSION->setPreviousUserId( $userId );
@@ -217,6 +222,16 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
 
         if( $sessionObject ){
             $_SESSION->fireInitialEvent();
+        }
+    }
+}
+else if ( $thereAreAlternatives  ){
+
+    foreach( $_SERVER[ 'SNAPSHOT_JSON' ][ 'snapshot' ] as $s => $users ){
+
+        if( in_array( 'cli', $users ) ){
+            $_SERVER[ 'CF_SNAPSHOT' ] = $s;
+            break;
         }
     }
 }
@@ -246,7 +261,7 @@ else {
     
     set_include_path( get_include_path() . PATH_SEPARATOR . CF_INCLUDE_PATH . PATH_SEPARATOR . CF_SNAPSHOTS_PATH . $_SERVER[ 'CF_SNAPSHOT' ] . DIRECTORY_SEPARATOR . 'vendor'   );
         
-    if( $previous == 0 ){        //TEngo que quitar el autoload del composer
+    if( $autoloadComposer ){        //TEngo que quitar el autoload del composer
 
         $autoloadFunctions = spl_autoload_functions();
         
@@ -255,7 +270,7 @@ else {
         }
         unset( $autoloadFunctions );
     }
-    else{
+    else if ( $autoloadDefault ){
         spl_autoload_unregister( 'cfFrameworkDefaultClassPath' );
     }
 
@@ -264,4 +279,4 @@ else {
     include CF_INCLUDE_PATH . '..' . DIRECTORY_SEPARATOR . 'autoload_files.php';
 }
 
-unset( $previous );
+unset( $previous, $autoloadComposer, $autoloadDefault, $thereAreAlternatives );

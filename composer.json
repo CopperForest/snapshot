@@ -1,5 +1,21 @@
 {
     "name": "copperforest/snapshot",
+    "description": "A composer plugin that let you choose differents code snapshots for differents users",
+    "homepage": "http://spanshot.copperforest.org",
+    "readme": "README.md",
+    "authors":[
+        {
+            "name": "Alejandro Gama Castro",
+            "email": "alex@copperforest.org",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "snapshot@copperfores.org"
+    },
+    "license": "Apache-2.0",
+    "keywords": [ "snapshot", "logging" ],
+    
     "type": "composer-plugin",
     "require": {
         "php": ">=5.3",
