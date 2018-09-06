@@ -29,7 +29,7 @@ This plugin define a new composer comand: **create-snapshot**. You must run this
 php composer.phar create-snapshot
 ```
 ## choose the snapshot
-You must edit the file **./snapshot/snapshot.json** and choose the :
+You must edit the file **./snapshots/snapshot.json** and choose the :
 
 ```javascript
 {
