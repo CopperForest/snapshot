@@ -39,5 +39,7 @@ You must edit the file **./snapshot/snapshot.json** and choose the :
     }
 }
 ```
+## warning
+The SessionHandler class (and all the classes used in its __construct() method) allways loads from default snapshot because previously we don't know the user ID.
 
 ### That's all

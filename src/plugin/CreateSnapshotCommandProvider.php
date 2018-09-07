@@ -1,16 +1,22 @@
 <?php
-namespace copperforest\snapshot;
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * This file is part of the Snapshot plugin.
+ *
+ * (c) Alejandro Gama Castro <alex@copperforest.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+namespace copperforest\snapshot;
 
 use Composer\Plugin\Capability\CommandProvider as CommandProviderCapability;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Composer\Command\BaseCommand;
 
+/**
+ * @author Alejandro Gama Castro <alex@copperforest.org>
+ */
 class CreateSnapshotCommandProvider implements CommandProviderCapability
 {
     public function getCommands()

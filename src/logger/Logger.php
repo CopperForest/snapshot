@@ -1,11 +1,17 @@
 <?php
-
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This file is part of the Snapshot plugin.
+ *
+ * (c) Alejandro Gama Castro <alex@copperforest.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 namespace copperforest\snapshot\logger;
 
+/**
+ * @author Alejandro Gama Castro <alex@copperforest.org>
+ */
 class Logger extends AbstractLogger
 {
 

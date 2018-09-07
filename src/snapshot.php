@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Snapshot plugin.
+ *
+ * (c) Alejandro Gama Castro <alex@copperforest.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 //Aqui tengo que poner una carga de clases básica para que se pueda ejecturar el commons?
 require_once 'snapshot.base.php';
