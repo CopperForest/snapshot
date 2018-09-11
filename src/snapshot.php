@@ -213,10 +213,23 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
 
                     break;
                 }
-            }            
+            }   
+            
+            
+            if( $storedUserId == null ){
+                $_SESSION->fireOnCreate();
+            }
+            else{
+                $_SESSION->fireOnResume();
+            }
+            
 
             if( $storedUserId != $userId ){  //EN QUE cIRCUNSTANCIAS PASA ESTO? CUANDO storedUserId esta a vacio y UserId no? Y en el constructor de la session pueden pasar muchas cosas
+                
                 $_SESSION->setPreviousUserId( $userId );
+                
+                $_SESSION->fireOnAuthenticate();
+                
                 
                 if( $sessionObject ){
                     $_SESSION->commit();

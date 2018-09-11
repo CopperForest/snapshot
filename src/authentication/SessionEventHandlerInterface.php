@@ -10,7 +10,8 @@
 namespace copperforest\snapshot\authentication;
 
 /**
- * This class defines an interface to 
+ * This class defines an interface to be implemented to perform actions for
+ * session events.
  * @author Alejandro Gama Castro <alex@copperforest.org>
  */
 interface SessionEventHandler{
