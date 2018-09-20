@@ -93,7 +93,7 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
     //$_SERVER[ 'SCRIPT_NAME '] = rtrim( $_SERVER['SCRIPT_NAME'], '/' );
     
     define( 'CF_HTTP_PATH',
-            ( dirname( $_SERVER[ 'SCRIPT_NAME'] ) == '/' ) ? '' : dirname( $_SERVER[ 'SCRIPT_NAME'] )   ); //dirname?
+            strtr( ( dirname( $_SERVER[ 'SCRIPT_NAME'] ) == DIRECTORY_SEPARATOR ) ? '' : dirname( $_SERVER[ 'SCRIPT_NAME'] ), DIRECTORY_SEPARATOR, "/" ) ); //dirname?
     
     $host = '';
     $port = 80;
