@@ -99,8 +99,8 @@ class Logger extends AbstractLogger
 
             $text .= $this->script."\n";
             
-            foreach( $this->data as $line ){
-                $text .=  $line[ 'user' ]. '@'.gmdate( 'Y-m-d H:i:s', $line[ 'time' ] ) . ': '. $line[ 'data' ] ."\n";
+            foreach( $this->data as $l ){
+                $text .=  $l->getUserId(). '@'.gmdate( 'Y-m-d H:i:s', $l->getTime() ) . ': '. $l->getText() ."\n";
             }
 
             fwrite( $this->fp, $text );

@@ -58,7 +58,7 @@ abstract class AbstractLogger {
             $this->userId = $_SESSION->getUserId();
         }
        
-        $this->data[] = array( 'time' => time(), 'user' => $this->userId, 'data' => $text );
+        $this->data[] = new LoggerLine( $this->userId, $text );
                
         if( !$append ){
             $this->success = true;

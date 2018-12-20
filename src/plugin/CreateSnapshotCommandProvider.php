@@ -21,7 +21,20 @@ class CreateSnapshotCommandProvider implements CommandProviderCapability
 {
     public function getCommands()
     {
-        return array( new CreateSnapshotCommand() );
+        return array( new CreateSnapshotCommand(), new DebugSnapShotCommand() );
+    }
+}
+class DebugSnapShotCommand extends BaseCommand
+{
+    //TEngo que hacer una ejecución infinita, en la que tengo que tengo que comprobar si cambian algunos de los archivos que influyen ene el proyecto
+    //por debajo del composer
+    
+    protected function configure()
+    {
+        $this
+            ->setName('debug-snapshot')
+            ->setDescription( 'Update automatically the last snapshot with the changes made in the filesystem. This activate the debug mode too.' )
+            ->ignoreValidationErrors();
     }
 }
 
