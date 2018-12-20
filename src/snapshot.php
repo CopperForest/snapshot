@@ -162,6 +162,7 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
                             $handler[ 'path' ] == '/'     ||
                             strpos( CF_HTTP_PATH . '/' , $handler[ 'path' ] . '/' ) == 0
                         ){
+                            $selectedHandlerConfig = $handler;
                             $handlerNumber = $i;
                             break;
                         }
@@ -171,9 +172,9 @@ if ( CF_HTTP_MODE ) {//Estamos via protocolo http (no consola), buscamos usuario
 
             if ( $handlerNumber !== null ) {
 
-                if( !empty( $_SERVER[ 'SNAPSHOT_JSON' ][ 'session' ][ 'handlers' ][ $handlerNumber ][ 'save_handler' ] ) ){
+                if( !empty( $selectedHandlerConfig[ 'save_handler' ] ) ){
 
-                    $_SESSION = new  $_SERVER[ 'SNAPSHOT_JSON' ][ 'session' ][ 'handlers' ][ $handlerNumber ][ 'save_handler' ]( $_SERVER[ 'SNAPSHOT_JSON' ][ 'session' ][ 'handlers' ][ $handlerNumber ] );
+                    $_SESSION = new  $selectedHandlerConfig[ 'save_handler' ]( $selectedHandlerConfig );
 
                     register_shutdown_function( array( $_SESSION, 'writeClose' ) ); //por si acaso la otra no llega a ejecutarse
                 }
