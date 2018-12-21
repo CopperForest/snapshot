@@ -12,7 +12,7 @@ namespace copperforest\snapshot\logger;
 /**
  * @author Alejandro Gama Castro <alex@copperforest.org>
  */
-class LoggerLine
+class LogLine
 {
     protected $time;
     protected $userId;
@@ -31,11 +31,17 @@ class LoggerLine
         return $this->time;
     }
     
-    function getUserId(){
+    function getUserId()
+    {
         return $this->userId;
     }
     
-    function getText(){
+    function getText()
+    {
         return $this->text;
+    }
+    
+    function __toString(){
+        return gmdate( 'Y-m-d H:i:s', $this->time ) . '@' . $this->userId.  ':' . "\n" . $this->text . "\n";
     }
 }

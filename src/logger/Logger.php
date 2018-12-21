@@ -16,6 +16,13 @@ class Logger extends AbstractLogger
 {
 
     static protected $loggers = array( );
+    static protected $names = array(
+        CF_LOG_ERROR    => 'error',
+        CF_LOG_WARNING  => 'warning',
+        CF_LOG_INFO     => 'info',
+        CF_LOG_DEBUG    => 'debug',
+        CF_LOG_TRACE    => 'trace'
+    );
 
     private $fileName = null;
     private $fp = null;
@@ -50,12 +57,6 @@ class Logger extends AbstractLogger
 
         if ( $this->options & $errorLevel ) {
 
-
-            $names = array(
-                CF_LOG_ERROR => 'error', CF_LOG_WARNING => 'warning', CF_LOG_INFO => 'info',
-                CF_LOG_DEBUG => 'debug', CF_LOG_TRACE => 'trace'
-                );
-
             //Bueno, de ppo no vale 0?
             if( !is_numeric( $_SERVER[ 'CF_SNAPSHOT' ] ) ){
                 $path = CF_SNAPSHOTS_PATH . '0';
@@ -81,7 +82,7 @@ class Logger extends AbstractLogger
                 }
             }
 
-            $fileName =  $path . DIRECTORY_SEPARATOR  . $names[ $this->options ] . '.log';
+            $fileName =  $path . DIRECTORY_SEPARATOR  . self::$names[ $this->options ] . '.log';
 
             if( $fileName != $this->fileName ) {
 
@@ -97,10 +98,10 @@ class Logger extends AbstractLogger
 
             $text = '';
 
-            $text .= $this->script."\n";
+            $text .= $this->script . "\n";
             
             foreach( $this->data as $l ){
-                $text .=  $l->getUserId(). '@'.gmdate( 'Y-m-d H:i:s', $l->getTime() ) . ': '. $l->getText() ."\n";
+                $text .=  (string) $l;
             }
 
             fwrite( $this->fp, $text );

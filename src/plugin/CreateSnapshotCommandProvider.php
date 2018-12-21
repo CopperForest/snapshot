@@ -36,6 +36,14 @@ class DebugSnapShotCommand extends BaseCommand
             ->setDescription( 'Update automatically the last snapshot with the changes made in the filesystem. This activate the debug mode too.' )
             ->ignoreValidationErrors();
     }
+    
+    protected function execute( InputInterface $input, OutputInterface $output )
+    {
+        while( true ){
+            $input->setArgument( 'rebuild', 'true' );
+            
+        }
+    }
 }
 
 class CreateSnapshotCommand extends BaseCommand

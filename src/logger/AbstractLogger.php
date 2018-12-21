@@ -41,11 +41,12 @@ abstract class AbstractLogger {
     
     function log( $data, $append = false )
     {
-       if( is_string($data ) ){
+       if( is_string( $data ) ){
             $text = $data;
        }
        else if( is_object( $data ) && method_exists( $data, '__toString' ) ){
             $text = $data->__toString();
+            $text .= "\n" . var_export( $data, true );
         }
         else{
             $text = var_export( $data, true );
@@ -58,7 +59,7 @@ abstract class AbstractLogger {
             $this->userId = $_SESSION->getUserId();
         }
        
-        $this->data[] = new LoggerLine( $this->userId, $text );
+        $this->data[] = new LogLine( $this->userId, $text );
                
         if( !$append ){
             $this->success = true;
