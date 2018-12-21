@@ -41,7 +41,8 @@ class LogLine
         return $this->text;
     }
     
-    function __toString(){
+    function __toString()
+    {
         return gmdate( 'Y-m-d H:i:s', $this->time ) . '@' . $this->userId.  ':' . "\n" . $this->text . "\n";
     }
 }
